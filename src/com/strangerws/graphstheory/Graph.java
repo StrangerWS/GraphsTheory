@@ -10,11 +10,11 @@ import java.util.Arrays;
  * Created by DobryninAM on 27.09.2016.
  */
 public class Graph {
-    class Node {
-        public String info;
-        public ArrayList<String> adjacent;
+    private class Node {
+        String info;
+        ArrayList<String> adjacent;
 
-        public Node(String nodeName, ArrayList<String> adjacentList) {
+        Node(String nodeName, ArrayList<String> adjacentList) {
             info = nodeName;
             adjacent = adjacentList;
         }
@@ -23,7 +23,7 @@ public class Graph {
             return adjacent.size();
         }
 
-        public void print() {
+        void print() {
             System.out.print(info + " ");
             for (Object anAdjacent : adjacent) {
                 System.out.print(anAdjacent + " ");
@@ -33,6 +33,7 @@ public class Graph {
     }
 
     ArrayList<Node> graph;
+    boolean isOriented = false;
 
     public Graph(String name) {
         try (BufferedReader fs = new BufferedReader(new FileReader(name))) {
@@ -47,7 +48,24 @@ public class Graph {
         } catch (IOException exc1) {
             System.out.println("Error in reading file!");
         }
+    }
 
+    public Graph(String name, String orientation) {
+        try (BufferedReader fs = new BufferedReader(new FileReader(name))) {
+            String line;
+            graph = new ArrayList<>();
+            while ((line = fs.readLine()) != null) {
+                ArrayList<String> tmp = new ArrayList<>();
+                String[] mas = line.split(" ");
+                tmp.addAll(Arrays.asList(mas).subList(1, mas.length));
+                graph.add(new Node(mas[0], tmp));
+                if (orientation.equals("oriented")) {
+                    isOriented = true;
+                }
+            }
+        } catch (IOException exc1) {
+            System.out.println("Error in reading file!");
+        }
     }
 
     public Graph() {
@@ -60,6 +78,10 @@ public class Graph {
 
     public void addNode(String nodeInfo, ArrayList<String> adjacentList) {
         graph.add(new Node(nodeInfo, adjacentList));
+    }
+
+    public void addNode(Node node) {
+        graph.add(node);
     }
 
     public void deleteNode(String nodeInfo) {
@@ -93,23 +115,29 @@ public class Graph {
 
     public ArrayList<String> nodeInOut(String nodeInfo) {
         ArrayList<String> arrayInOut = new ArrayList<>();
-        //Node node
+        try {
+            Node node = nodeFind(nodeInfo);
 
-        for (Node node : graph) {
-
+            for (String str : node.adjacent) {
+                Node tmp = nodeFind(str);
+                if (tmp.adjacent.contains(nodeInfo)) {
+                    arrayInOut.add(tmp.info);
+                }
+            }
+        } catch (NullPointerException exc1) {
+            System.out.println("Node not found!");
         }
-
         return arrayInOut;
     }
 
-    private Node nodeFind (String nodeInfo){
+    private Node nodeFind(String nodeInfo) {
         for (Node node : graph)
             if (node.info.equals(nodeInfo))
                 return node;
         return null;
     }
 
-    public ArrayList<String> nodesOnlyPath (String u, String v){
+    public ArrayList<String> nodesOnlyPath(String u, String v) {
         ArrayList<String> arrayOnlyPath = new ArrayList<>();
 
         for (Node node : graph) {
@@ -120,9 +148,28 @@ public class Graph {
         return arrayOnlyPath;
     }
 
-    public Graph MergeOrientedGraphs (Graph graph1, Graph graph2){
+    public static Graph MergeOrientedGraphs(Graph graph1, Graph graph2) {
         Graph newGraph = new Graph();
-        //?????????? ??? ???????
+        if (graph1.isOriented || graph2.isOriented) {
+            newGraph = new Graph(graph1);
+
+            for (Node node : newGraph.graph) {
+                try {
+                    if (node.info.equals(graph2.nodeFind(node.info).info)) {
+                        for (String str : graph2.nodeFind(node.info).adjacent) {
+                            if (!node.adjacent.contains(str)) {
+                                node.adjacent.add(str);
+                            }
+                        }
+                    }
+                    else {
+                        newGraph.addNode(node);
+                    }
+                } catch (NullPointerException exc) {
+                    System.out.println("Cannot find node!");
+                }
+            }
+        }
         return newGraph;
     }
 }
