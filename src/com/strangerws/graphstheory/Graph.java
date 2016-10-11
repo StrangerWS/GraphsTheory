@@ -85,7 +85,6 @@ public class Graph {
     }
 
     public void deleteNode(String nodeInfo) {
-        //if ()
     }
 
     public void print() {
