@@ -85,6 +85,13 @@ public class Graph {
     }
 
     public void deleteNode(String nodeInfo) {
+        for (Node node : graph)
+            if (node.info.equals(nodeInfo)){
+                graph.remove(node);
+            }
+            else if (node.adjacent.contains(nodeInfo)){
+                node.adjacent.remove(nodeInfo);
+            }
     }
 
     public void print() {
@@ -160,8 +167,7 @@ public class Graph {
                                 node.adjacent.add(str);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         newGraph.addNode(node);
                     }
                 } catch (NullPointerException exc) {

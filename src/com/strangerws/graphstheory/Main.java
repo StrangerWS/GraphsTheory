@@ -37,5 +37,8 @@ public class Main {
             System.out.print(str + " ");
         }
         System.out.println();
+
+        graph1.deleteNode("6");
+        graph1.print();
     }
 }
