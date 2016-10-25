@@ -1,5 +1,7 @@
 package com.strangerws.graphstheory.newgraph;
 
+import com.sun.javafx.geom.Edge;
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -11,13 +13,25 @@ public class NewNode {
     TreeSet<NewEdge> ins;
     TreeSet<NewEdge> outs;
 
+    public NewNode(){
+        ins = new TreeSet<>();
+        outs = new TreeSet<>();
+    }
     public NewNode(String name) {
         this.name = name;
+        ins = new TreeSet<>();
+        outs = new TreeSet<>();
     }
-
-    public NewNode(TreeSet<NewEdge> ins, TreeSet<NewEdge> outs, String name) {
+    public NewNode(String name, TreeSet<NewEdge> ins, TreeSet<NewEdge> outs) {
+        this.name = name;
         this.ins = ins;
         this.outs = outs;
-        this.name = name;
+    }
+
+    public void putNewOut(NewNode end) {
+        ins.add(new NewEdge(this, end));
+    }
+    public void putNewIn(NewNode start){
+        outs.add(new NewEdge(start, this));
     }
 }

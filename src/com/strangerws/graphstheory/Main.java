@@ -1,5 +1,7 @@
 package com.strangerws.graphstheory;
 
+import com.strangerws.graphstheory.newgraph.NewGraph;
+
 import java.util.ArrayList;
 
 /**
@@ -9,9 +11,9 @@ public class Main {
     public static void main(String[] args) {
         String node = "1";
 
-        Graph graph1 = new Graph("C:\\Users\\DobryninAM\\Documents\\TextFiles\\test.txt");
-        Graph graphNull = new Graph();
-        Graph graph1copy = new Graph(graph1);
+        NewGraph graph1 = new NewGraph("C:\\Users\\DobryninAM\\Documents\\TextFiles\\test.txt");
+        NewGraph graphNull = new NewGraph();
+        NewGraph graph1copy = new NewGraph(graph1);
 
         graph1.print();
         graphNull.print();
