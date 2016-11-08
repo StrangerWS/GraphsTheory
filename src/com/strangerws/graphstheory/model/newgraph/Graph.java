@@ -1,12 +1,13 @@
-package com.strangerws.graphstheory.newgraph;
+package com.strangerws.graphstheory.model.newgraph;
 
+import com.strangerws.graphstheory.model.newgraph.element.Edge;
+import com.strangerws.graphstheory.model.newgraph.element.Node;
 import com.sun.istack.internal.Nullable;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.TreeSet;
+import java.util.*;
 
 
 /**
@@ -17,7 +18,7 @@ public class Graph {
     private TreeSet<Node> graph;
 
     public Graph(String fileName) {
-        graph = new TreeSet<Node>();
+        graph = new TreeSet<>();
         try (BufferedReader fs = new BufferedReader(new FileReader(fileName))) {
             String line;
             Node tmp;
@@ -69,17 +70,17 @@ public class Graph {
     }
 
     public Graph() {
-        graph = new TreeSet<Node>();
+        graph = new TreeSet<>();
     }
 
-    public Graph(Graph anotherNewGraph) {
-        graph = (TreeSet<Node>) anotherNewGraph.graph.clone();
+    public Graph(Graph anotherGraph) {
+        graph = (TreeSet<Node>) anotherGraph.graph.clone();
     }
 
     @Nullable
     public Node findNode(String name) {
         for (Node node : graph) {
-            if (node.name.equals(name)) {
+            if (node.getName().equals(name)) {
                 return node;
             }
         }
@@ -87,9 +88,15 @@ public class Graph {
     }
 
     public void deleteNull() {
-        for (int i = 0; i < graph.size(); ++i) {
-            if (graph.iterator().next().ins.size() == 0 && graph.iterator().next().outs.size() == 0)
-                graph.remove(graph.iterator().next());
+        try {
+            for (Node node : graph) {
+                if (node.getIns().size() == 0 && node.getOuts().size() == 0){
+                    graph.remove(node);
+                }
+            }
+        } catch (ConcurrentModificationException e){
+            //TODO - обработка
+            e.getStackTrace();
         }
     }
 
@@ -97,5 +104,23 @@ public class Graph {
         for (Node node : graph) {
             node.print();
         }
+    }
+
+    public ArrayList<Node> nodesOnlyPath(String u, String v){
+        //TODO - оптимизация
+        Node nodeU = findNode(u);
+        Node nodeV = findNode(v);
+        ArrayList<Node> nop = new ArrayList<>();
+        for (Edge edge : nodeU.getOuts()){
+            Node tmp = edge.getEnd();
+            for (Edge edge1 : tmp.getOuts()){
+                for (Edge edge2 : tmp.getIns()){
+                    if (edge1.getEnd().equals(edge2.getStart()) && edge1.getStart().equals(nodeU)){
+                        nop.add(edge1.getEnd());
+                    }
+                }
+            }
+        }
+        return nop;
     }
 }

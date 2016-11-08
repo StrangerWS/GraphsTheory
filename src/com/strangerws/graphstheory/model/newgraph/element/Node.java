@@ -1,4 +1,4 @@
-package com.strangerws.graphstheory.newgraph;
+package com.strangerws.graphstheory.model.newgraph.element;
 
 import java.util.TreeSet;
 
@@ -6,9 +6,9 @@ import java.util.TreeSet;
  * Created by DobryninAM on 11.10.2016.
  */
 public class Node implements Comparable<Node> {
-    String name;
-    TreeSet<Edge> ins;
-    TreeSet<Edge> outs;
+    private String name;
+    private TreeSet<Edge> ins;
+    private TreeSet<Edge> outs;
 
     public Node() {
         ins = new TreeSet<>();
@@ -63,5 +63,17 @@ public class Node implements Comparable<Node> {
     @Override
     public int compareTo(Node o) {
         return name.compareTo(o.name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TreeSet<Edge> getIns() {
+        return ins;
+    }
+
+    public TreeSet<Edge> getOuts() {
+        return outs;
     }
 }
