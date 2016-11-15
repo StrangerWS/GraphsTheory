@@ -1,5 +1,6 @@
 package com.strangerws.graphstheory.view.api;
 
+import com.strangerws.graphstheory.model.newgraph.Graph;
 import com.strangerws.graphstheory.model.newgraph.element.Node;
 
 import java.util.ArrayList;
@@ -9,5 +10,9 @@ import java.util.ArrayList;
  */
 public interface View {
 
-    void print(ArrayList<Node> nodes, String what);
+    void printGraph(Graph graph);
+
+    void printGraph(Graph graph, String name);
+
+    void printNodes(ArrayList<Node> nodes, String what);
 }

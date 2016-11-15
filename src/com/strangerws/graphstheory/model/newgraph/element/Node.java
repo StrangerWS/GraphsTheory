@@ -35,30 +35,6 @@ public class Node implements Comparable<Node> {
         ins.add(new Edge(start, this));
     }
 
-    public void print() {
-        System.out.print(name);
-        System.out.print(" Ins:");
-
-        if (!ins.isEmpty()) {
-            for (Edge in : ins) {
-                System.out.print(" " + in.start.name);
-            }
-        } else {
-            System.out.print(" None");
-        }
-
-        System.out.print(" Outs:");
-
-        if (!outs.isEmpty()) {
-            for (Edge out : outs) {
-                System.out.print(" " + out.end.name);
-            }
-        } else {
-            System.out.print(" None");
-        }
-        System.out.println();
-    }
-
 
     @Override
     public int compareTo(Node o) {

@@ -50,6 +50,27 @@ public class Edge implements Comparable<Edge> {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Edge edge = (Edge) o;
+
+        if (weight != edge.weight) return false;
+        if (start != null ? !start.equals(edge.start) : edge.start != null) return false;
+        return !(end != null ? !end.equals(edge.end) : edge.end != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = start != null ? start.hashCode() : 0;
+        result = 31 * result + (end != null ? end.hashCode() : 0);
+        result = 31 * result + weight;
+        return result;
+    }
+
     public Node getStart() {
         return start;
     }

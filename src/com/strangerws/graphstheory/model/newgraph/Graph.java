@@ -7,7 +7,9 @@ import com.sun.istack.internal.Nullable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.TreeSet;
 
 
 /**
@@ -77,6 +79,37 @@ public class Graph {
         graph = (TreeSet<Node>) anotherGraph.graph.clone();
     }
 
+    public TreeSet<Node> getGraph() {
+        return graph;
+    }
+
+    public void addNode(Node node, String[] ins, String[] outs) {
+        graph.add(node);
+
+        for (String in : ins) {
+            if (findNode(in) != null) {
+                node.putNewIn(findNode(in));
+                findNode(in).putNewOut(node);
+            } else {
+                Node tmp = new Node(in);
+                node.putNewIn(tmp);
+                tmp.putNewOut(node);
+                graph.add(tmp);
+            }
+        }
+        for (String out : outs) {
+            if (findNode(out) != null) {
+                node.putNewOut(findNode(out));
+                findNode(out).putNewIn(node);
+            } else {
+                Node tmp = new Node(out);
+                node.putNewOut(tmp);
+                tmp.putNewIn(node);
+                graph.add(tmp);
+            }
+        }
+    }
+
     @Nullable
     public Node findNode(String name) {
         for (Node node : graph) {
@@ -90,37 +123,41 @@ public class Graph {
     public void deleteNull() {
         try {
             for (Node node : graph) {
-                if (node.getIns().size() == 0 && node.getOuts().size() == 0){
+                if (node.getIns().size() == 0 && node.getOuts().size() == 0) {
                     graph.remove(node);
                 }
             }
-        } catch (ConcurrentModificationException e){
+        } catch (ConcurrentModificationException e) {
             //TODO - обработка
             e.getStackTrace();
         }
     }
 
-    public void print() {
-        for (Node node : graph) {
-            node.print();
-        }
-    }
-
-    public ArrayList<Node> nodesOnlyPath(String u, String v){
-        //TODO - оптимизация
-        Node nodeU = findNode(u);
-        Node nodeV = findNode(v);
-        ArrayList<Node> nop = new ArrayList<>();
-        for (Edge edge : nodeU.getOuts()){
-            Node tmp = edge.getEnd();
-            for (Edge edge1 : tmp.getOuts()){
-                for (Edge edge2 : tmp.getIns()){
-                    if (edge1.getEnd().equals(edge2.getStart()) && edge1.getStart().equals(nodeU)){
-                        nop.add(edge1.getEnd());
-                    }
-                }
+    public ArrayList<Node> nodeGetInOut(String nodeInfo) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        Node node = findNode(nodeInfo);
+        for (Edge edge : node.getIns()) {
+            if (node.getOuts().contains(new Edge(node, edge.getStart()))) {
+                nodes.add(edge.getStart());
             }
         }
-        return nop;
+        return nodes;
+    }
+
+    public ArrayList<Node> nodesOnlyPath(String u, String v) {
+        Node nodeU = findNode(u);
+        Node nodeV = findNode(v);
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Edge edge : nodeU.getOuts()) {
+            Node tmp = edge.getEnd();
+            if (tmp.getIns().contains(new Edge(nodeU, tmp)) && tmp.getOuts().contains(new Edge(tmp, nodeV))) {
+                nodes.add(tmp);
+            }
+        }
+        return nodes;
+    }
+
+    public void merge(Graph anotherGraph) {
+        graph.addAll(anotherGraph.getGraph());
     }
 }
