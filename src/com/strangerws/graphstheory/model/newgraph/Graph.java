@@ -98,11 +98,12 @@ public class Graph {
             }
         }
         for (String out : outs) {
-            if (findNode(out) != null) {
-                node.putNewOut(findNode(out));
-                findNode(out).putNewIn(node);
+            Node tmp = findNode(out);
+            if (tmp != null) {
+                node.putNewOut(tmp);
+                tmp.putNewIn(node);
             } else {
-                Node tmp = new Node(out);
+                tmp = new Node(out);
                 node.putNewOut(tmp);
                 tmp.putNewIn(node);
                 graph.add(tmp);
