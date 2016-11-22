@@ -1,4 +1,4 @@
-package com.strangerws.graphstheory.model.newgraph.element;
+package com.strangerws.graphstheory.model.element;
 
 import java.util.TreeSet;
 
@@ -38,7 +38,27 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
-        return name.compareTo(o.name);
+        int len1 = name.length();
+        int len2 = o.name.length();
+
+        if (len1 != len2) {
+            return len1 - len2;
+        } else {
+            int lim = Math.min(len1, len2);
+            char v1[] = name.toCharArray();
+            char v2[] = o.name.toCharArray();
+
+            int k = 0;
+            while (k < lim) {
+                char c1 = v1[k];
+                char c2 = v2[k];
+                if (c1 != c2) {
+                    return c1 - c2;
+                }
+                k++;
+            }
+        }
+        return 0;
     }
 
     public String getName() {

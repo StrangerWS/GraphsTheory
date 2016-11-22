@@ -1,4 +1,4 @@
-package com.strangerws.graphstheory.model.newgraph.element;
+package com.strangerws.graphstheory.model.element;
 
 /**
  * Created by User on 13.10.2016.
@@ -32,11 +32,11 @@ public class Edge implements Comparable<Edge> {
 
     @Override
     public int compareTo(Edge o) {
-        if (this.start.getName().compareTo(o.start.getName()) > 0 ||
-                (this.start.getName().equals(o.start.getName()) && (this.end.getName().compareTo(o.end.getName()) > 0))) {
+        if (this.start.compareTo(o.start) > 0 ||
+                (this.start.equals(o.start) && (this.end.compareTo(o.end) > 0))) {
             return 1;
-        } else if (this.start.getName().compareTo(o.start.getName()) < 0 ||
-                (this.start.getName().equals(o.start.getName()) && (this.end.getName().compareTo(o.end.getName()) < 0))) {
+        } else if (this.start.compareTo(o.start) < 0 ||
+                (this.start.equals(o.start) && (this.end.compareTo(o.end) < 0))) {
             return -1;
         } else return 0;
     }

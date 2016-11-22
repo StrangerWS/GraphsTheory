@@ -1,7 +1,7 @@
 package com.strangerws.graphstheory.view.api;
 
-import com.strangerws.graphstheory.model.newgraph.Graph;
-import com.strangerws.graphstheory.model.newgraph.element.Node;
+import com.strangerws.graphstheory.model.Graph;
+import com.strangerws.graphstheory.model.element.Node;
 
 import java.util.ArrayList;
 

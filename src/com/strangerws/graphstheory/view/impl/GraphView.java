@@ -1,8 +1,8 @@
 package com.strangerws.graphstheory.view.impl;
 
-import com.strangerws.graphstheory.model.newgraph.Graph;
-import com.strangerws.graphstheory.model.newgraph.element.Edge;
-import com.strangerws.graphstheory.model.newgraph.element.Node;
+import com.strangerws.graphstheory.model.Graph;
+import com.strangerws.graphstheory.model.element.Edge;
+import com.strangerws.graphstheory.model.element.Node;
 import com.strangerws.graphstheory.view.api.View;
 
 import java.util.ArrayList;
@@ -51,6 +51,7 @@ public class GraphView implements View {
         for (Node node : nodes) {
             System.out.print(String.format(" %s", node.getName()));
         }
+        System.out.println();
         System.out.println();
     }
 
