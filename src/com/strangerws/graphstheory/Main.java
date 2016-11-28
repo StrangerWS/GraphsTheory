@@ -30,5 +30,12 @@ public class Main {
 
         graph1.merge(graph2);
         view.printAdjacentList(graph1, "Merged graphs:");
+        view.printGraph(graphCopy);
+
+        view.printNodes(graphCopy.beginBFS(String.valueOf(1)), "BFS:");
+        view.printNodes(graphCopy.beginDFS(String.valueOf(1)), "DFS:");
+        view.printNodes(graphCopy.getUnaccessibleNodesFromNode(String.valueOf(1)), "Unaccessible from 1:");
+        view.printInteger(graphCopy.getArkCountFromMinimalPath(String.valueOf(1), String.valueOf(2)), "Ark Count for nodes 1 and 2:");
+        view.printMap(graphCopy.getMinimalLengthFromAllNodesToNode(String.valueOf(1)), "Minimal Path from 1 to nodes:");
     }
 }

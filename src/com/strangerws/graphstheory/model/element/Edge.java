@@ -3,11 +3,18 @@ package com.strangerws.graphstheory.model.element;
 /**
  * Created by User on 13.10.2016.
  */
-public class Edge implements Comparable<Edge> {
-    Node start;
-    Node end;
-    int weight;
-    boolean isArc;
+public class Edge implements Comparable<Edge>, Cloneable {
+    private Node start;
+    private Node end;
+    private int weight;
+    private boolean isArc;
+
+    public Edge(Edge anotherEdge) {
+        this.start = new Node(anotherEdge.start);
+        this.end = new Node(anotherEdge.end);
+        this.weight = anotherEdge.weight;
+        this.isArc = anotherEdge.isArc;
+    }
 
     public Edge(Node start, Node end) {
         this.start = start;

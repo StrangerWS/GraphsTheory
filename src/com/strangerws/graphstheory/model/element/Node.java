@@ -1,14 +1,45 @@
 package com.strangerws.graphstheory.model.element;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
  * Created by DobryninAM on 11.10.2016.
  */
-public class Node implements Comparable<Node> {
+public class Node implements Comparable<Node>, Cloneable {
     private String name;
     private TreeSet<Edge> ins;
     private TreeSet<Edge> outs;
+    private boolean isUsed = false;
+    private String elderName;
+
+    public String getElderName() {
+        return elderName;
+    }
+
+    public void setElderName(String elderName) {
+        this.elderName = elderName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TreeSet<Edge> getIns() {
+        return ins;
+    }
+
+    public TreeSet<Edge> getOuts() {
+        return outs;
+    }
+
+    public boolean isUsed() {
+        return isUsed;
+    }
+
+    public void setUsed(boolean used) {
+        isUsed = used;
+    }
 
     public Node() {
         ins = new TreeSet<>();
@@ -27,14 +58,61 @@ public class Node implements Comparable<Node> {
         this.outs = outs;
     }
 
-    public void putNewOut(Node end) {
-        outs.add(new Edge(this, end));
+    public Node(Node anotherNode) {
+        this.name = anotherNode.name;
+        ins = new TreeSet<>();
+        outs = new TreeSet<>();
+        for (Edge edge : ins) {
+            this.ins.add(new Edge(edge));
+        }
+        for (Edge edge : outs) {
+            this.outs.add(new Edge(edge));
+        }
     }
 
-    public void putNewIn(Node start) {
-        ins.add(new Edge(start, this));
+    public String[] getInsArray() {
+        String[] array = new String[ins.size()];
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (Edge edge : ins) {
+            arrayList.add(edge.getStart().getName());
+        }
+        return arrayList.toArray(array);
     }
 
+    public String[] getOutsArray() {
+        String[] array = new String[outs.size()];
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (Edge edge : outs) {
+            arrayList.add(edge.getEnd().getName());
+        }
+        return arrayList.toArray(array);
+    }
+
+    public void putNewOut(Edge edge) {
+        outs.add(edge);
+    }
+
+    public void putNewIn(Edge edge) {
+        ins.add(edge);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node node = (Node) o;
+
+        if (name != null ? !name.equals(node.name) : node.name != null) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        return result;
+    }
 
     @Override
     public int compareTo(Node o) {
@@ -59,17 +137,5 @@ public class Node implements Comparable<Node> {
             }
         }
         return 0;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public TreeSet<Edge> getIns() {
-        return ins;
-    }
-
-    public TreeSet<Edge> getOuts() {
-        return outs;
     }
 }
