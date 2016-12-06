@@ -12,6 +12,15 @@ public class Node implements Comparable<Node>, Cloneable {
     private TreeSet<Edge> outs;
     private boolean isUsed = false;
     private String elderName;
+    private int minWeight;
+
+    public int getMinWeight() {
+        return minWeight;
+    }
+
+    public void setMinWeight(int minWeight) {
+        this.minWeight = minWeight;
+    }
 
     public String getElderName() {
         return elderName;

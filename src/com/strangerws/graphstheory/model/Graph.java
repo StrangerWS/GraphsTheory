@@ -231,8 +231,14 @@ public class Graph {
         return breadthFirstSearch(findNode(nodeInfo));
     }
 
-    private void dijkstraAlgorithm() {
-        //TODO
+    private void dijkstraAlgorithm(String nodeInfo) {
+        Node node = findNode(nodeInfo);
+        for (Node value : graph) {
+            value.setMinWeight(Integer.MIN_VALUE);
+        }
+        node.setMinWeight(0);
+        for (Node value : graph) {
+        }
     }
 
     private void fordBellmanAlgorithm() {
@@ -348,7 +354,6 @@ public class Graph {
 
     //TODO - III - Остовное дерево по Краскалу
     public void getKruskalTree() {
-        //TODO
     }
 
     //TODO - IV-a-5
