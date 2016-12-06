@@ -29,17 +29,23 @@ public class Graph {
                 String[] mas = line.split(" ");
                 Edge edgeTemp;
                 tmp = findNode(mas[0]);
+                String[] element = new String[]{"", "0"};
                 if (tmp == null) {
                     tmp = new Node(mas[0]);
                     for (int i = 1; i < mas.length; i++) {
-                        if (findNode(mas[i]) == null) {
-                            search = new Node(mas[i]);
-                            edgeTemp = new Edge(tmp, search);
+                        if (mas[i].contains("-")) {
+                            element = mas[i].split("-");
+                        } else {
+                            element[0] = mas[i];
+                        }
+                        if (findNode(element[0]) == null) {
+                            search = new Node(element[0]);
+                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
                             tmp.putNewOut(edgeTemp);
                             search.putNewIn(edgeTemp);
                         } else {
-                            search = findNode(mas[i]);
-                            edgeTemp = new Edge(tmp, search);
+                            search = findNode(element[0]);
+                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
                             tmp.putNewOut(edgeTemp);
                             search.putNewIn(edgeTemp);
                         }
@@ -50,14 +56,19 @@ public class Graph {
 
                 } else if (tmp != null) {
                     for (int i = 1; i < mas.length; i++) {
-                        if ((findNode(mas[i])) == null) {
-                            search = new Node(mas[i]);
-                            edgeTemp = new Edge(tmp, search);
+                        if (mas[i].contains("-")) {
+                            element = mas[i].split("-");
+                        } else {
+                            element[0] = mas[i];
+                        }
+                        if ((findNode(element[0])) == null) {
+                            search = new Node(element[0]);
+                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
                             search.putNewIn(edgeTemp);
                             tmp.putNewOut(edgeTemp);
                         } else {
-                            search = findNode(mas[i]);
-                            edgeTemp = new Edge(tmp, search);
+                            search = findNode(element[0]);
+                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
                             search.putNewIn(edgeTemp);
                             tmp.putNewOut(edgeTemp);
                         }
@@ -354,6 +365,7 @@ public class Graph {
 
     //TODO - III - Остовное дерево по Краскалу
     public void getKruskalTree() {
+
     }
 
     //TODO - IV-a-5

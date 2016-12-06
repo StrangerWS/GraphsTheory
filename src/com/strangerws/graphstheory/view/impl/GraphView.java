@@ -50,8 +50,12 @@ public class GraphView implements View {
     @Override
     public void printNodes(List<Node> nodes, String info) {
         System.out.print(info);
-        for (Node node : nodes) {
-            System.out.print(String.format(" %s", node.getName()));
+        if (nodes.size() == 0) {
+            System.out.println(" None");
+        } else {
+            for (Node node : nodes) {
+                System.out.print(String.format(" %s", node.getName()));
+            }
         }
         System.out.println();
         System.out.println();

@@ -23,8 +23,8 @@ public class Main {
 
         view.printNodes(graph1.getNullNodes(), "Null nodes:");
         graph1.deleteNullNodes();
-        view.printGraph(graph1, "Original - deleted 7");
-        view.printGraph(graphCopy, "Copy - deleted 7");
+        view.printGraph(graph1, "Original - deleted nulls");
+        view.printGraph(graphCopy, "Copy - deleted nulls");
         view.printNodes(graph1.nodesOnlyPath(String.valueOf(1), String.valueOf(2)), "Nodes only path for 1 and 2:");
         view.printNodes(graph1.nodeGetInOut(String.valueOf(1)), "In and Out nodes for node 1:");
 
