@@ -9,6 +9,18 @@ public class Edge implements Comparable<Edge>, Cloneable {
     private int weight;
     private boolean isArc;
 
+    public Node getStart() {
+        return start;
+    }
+
+    public Node getEnd() {
+        return end;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
     public Edge(Edge anotherEdge) {
         this.start = new Node(anotherEdge.start);
         this.end = new Node(anotherEdge.end);
@@ -78,15 +90,8 @@ public class Edge implements Comparable<Edge>, Cloneable {
         return result;
     }
 
-    public Node getStart() {
-        return start;
-    }
-
-    public Node getEnd() {
-        return end;
-    }
-
-    public int getWeight() {
-        return weight;
+    @Override
+    public String toString() {
+        return String.format("{%s -(%s)-> %s} arc: %s", start.getName(), weight, end.getName(), isArc);
     }
 }

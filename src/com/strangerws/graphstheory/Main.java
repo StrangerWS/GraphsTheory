@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Graph graph1 = new Graph("resources\\test.txt");
         Graph graph2 = new Graph("resources\\test2.txt");
+        Graph graph3 = new Graph("resources\\test3.txt");
         Graph graphCopy = new Graph(graph1);
         GraphView view = new GraphView();
 
@@ -17,7 +18,7 @@ public class Main {
         view.printGraph(graphCopy, "Copy");
         view.printAdjacentList(graph1);
 
-        graph1.addNode(String.valueOf(8), new String[]{String.valueOf(2), String.valueOf(9)}, new String[]{String.valueOf(6), String.valueOf(9)});
+        graph1.addNode(String.valueOf(8), new String[]{String.valueOf(2), String.valueOf(9)});
         view.printGraph(graph1, "Original - added 8");
         view.printGraph(graphCopy, "Copy - added 8");
 
@@ -37,5 +38,6 @@ public class Main {
         view.printNodes(graphCopy.getUnaccessibleNodesFromNode(String.valueOf(1)), "Unaccessible from 1:");
         view.printInteger(graphCopy.getArkCountFromMinimalPath(String.valueOf(1), String.valueOf(2)), "Ark Count for nodes 1 and 2:");
         view.printMap(graphCopy.getMinimalLengthFromAllNodesToNode(String.valueOf(1)), "Minimal Path from 1 to nodes:");
+        view.printGraph(graphCopy.getKruskalTree());
     }
 }

@@ -83,7 +83,7 @@ public class Node implements Comparable<Node>, Cloneable {
         String[] array = new String[ins.size()];
         ArrayList<String> arrayList = new ArrayList<>();
         for (Edge edge : ins) {
-            arrayList.add(edge.getStart().getName());
+            arrayList.add(String.format("%s-%s", edge.getStart().getName(), edge.getWeight()));
         }
         return arrayList.toArray(array);
     }
@@ -92,7 +92,7 @@ public class Node implements Comparable<Node>, Cloneable {
         String[] array = new String[outs.size()];
         ArrayList<String> arrayList = new ArrayList<>();
         for (Edge edge : outs) {
-            arrayList.add(edge.getEnd().getName());
+            arrayList.add(String.format("%s-%s", edge.getEnd().getName(), edge.getWeight()));
         }
         return arrayList.toArray(array);
     }
