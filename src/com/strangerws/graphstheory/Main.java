@@ -37,7 +37,9 @@ public class Main {
         view.printNodes(graphCopy.beginDFS(String.valueOf(1)), "DFS:");
         view.printNodes(graphCopy.getUnaccessibleNodesFromNode(String.valueOf(1)), "Unaccessible from 1:");
         view.printInteger(graphCopy.getArkCountFromMinimalPath(String.valueOf(1), String.valueOf(2)), "Ark Count for nodes 1 and 2:");
-        view.printMap(graphCopy.getMinimalLengthFromAllNodesToNode(String.valueOf(1)), "Minimal Path from 1 to nodes:");
+        view.printMap(graphCopy.getMinimalLengthFromAllNodesToNode(String.valueOf(1)), "Minimal Path from all nodes to 1:");
         view.printGraph(graphCopy.getKruskalTree());
+        view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodes(String.valueOf(2)), "Minimal Path from 2 to all nodes:");
+        view.printInteger(graphCopy.getMinimalLength(String.valueOf(1), String.valueOf(6)), "Minimal Path from 1 to 6:");
     }
 }

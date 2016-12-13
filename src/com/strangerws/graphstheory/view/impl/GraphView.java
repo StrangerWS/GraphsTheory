@@ -99,4 +99,29 @@ public class GraphView implements View {
         System.out.println();
         System.out.println();
     }
+
+    public void printIntegers(List<Integer> integers) {
+        if (integers.size() == 0) {
+            System.out.println(" None");
+        } else {
+            for (Integer integer : integers) {
+                System.out.print(String.format(" %s", integer));
+            }
+        }
+        System.out.println();
+        System.out.println();
+    }
+
+    public void printIntegers(List<Integer> integers, String info) {
+        System.out.print(info);
+        if (integers.size() == 0) {
+            System.out.println(" None");
+        } else {
+            for (Integer integer : integers) {
+                System.out.print(String.format(" %s", integer));
+            }
+        }
+        System.out.println();
+        System.out.println();
+    }
 }

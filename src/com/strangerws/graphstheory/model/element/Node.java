@@ -13,6 +13,15 @@ public class Node implements Comparable<Node>, Cloneable {
     private boolean isUsed = false;
     private String elderName;
     private int minWeight;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getMinWeight() {
         return minWeight;

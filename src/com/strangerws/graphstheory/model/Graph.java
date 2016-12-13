@@ -100,6 +100,31 @@ public class Graph {
         return graph;
     }
 
+    public Graph buildFromMatrix(int[][] matrix) {
+        //TODO
+        Graph graph = new Graph();
+        Node node1;
+        Node node2;
+        Edge edge;
+
+        for (int i = 0; i < matrix.length; i++) {
+            graph.graph.add(new Node(String.valueOf(i + 1)));
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            node1 = findNode(String.valueOf(i + 1));
+            for (int j = 0; j < matrix.length; j++) {
+                if (matrix[i][j] != 0) {
+                    node2 = findNode(String.valueOf(j + 1));
+                    edge = new Edge(node1, node2, matrix[i][j]);
+                    node1.putNewOut(edge);
+                    node2.putNewIn(edge);
+                }
+            }
+        }
+        return graph;
+    }
+
     public void addNode(Node node) {
         //TODO - Fix
         if (findNode(node.getName()) == null) {
@@ -247,11 +272,39 @@ public class Graph {
     }
 
     private void fordBellmanAlgorithm() {
-        //TODO
+
     }
 
-    private void floydAlgorithm() {
-        //TODO
+    private int[][] floydAlgorithm() {
+        int[][] matrix = getWeightMatrixForGraph();
+        for (int k = 0; k < matrix.length; k++) {
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix.length; j++) {
+                    matrix[i][j] = Math.min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+                }
+            }
+        }
+        return matrix;
+    }
+
+    private int[][] getWeightMatrixForGraph() {
+        int[][] matrix = new int[graph.size()][graph.size()];
+        List<Node> graphList = new ArrayList<>(graph);
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                matrix[i][j] = Integer.MAX_VALUE / 2;
+            }
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            graphList.get(i).setId(i);
+            for (Edge edge : graphList.get(i).getOuts()) {
+                matrix[i][graphList.indexOf(edge.getEnd())] = edge.getWeight();
+            }
+        }
+
+        return matrix;
     }
 
     private Set<Edge> getUnorientedGraphEdges() {
@@ -417,19 +470,29 @@ public class Graph {
         return tree;
     }
 
-    //TODO - IV-a-5
+    //IV-b-5
     public List<Integer> getMinimalLengthFromNodeToAllNodes(String nodeInfo) {
         List<Integer> lengths = new ArrayList<>();
-        //TODO
 
+        Node node = findNode(nodeInfo);
+
+        int[][] weightMatrix = floydAlgorithm();
+        for (int i : weightMatrix[node.getId()]) {
+            lengths.add(i);
+        }
         return lengths;
     }
 
-    //TODO - IV-b-12
+    //IV-b-12
     public int getMinimalLength(String u, String v) {
         int length = 0;
-        //TODO
-        return length;
+
+        Node nodeU = findNode(u);
+        Node nodeV = findNode(v);
+
+        int[][] weightMatrix = floydAlgorithm();
+
+        return weightMatrix[nodeU.getId()][nodeV.getId()];
     }
 
     //TODO - IV-c-18
