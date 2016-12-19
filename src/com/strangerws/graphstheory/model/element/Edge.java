@@ -21,6 +21,10 @@ public class Edge implements Comparable<Edge>, Cloneable {
         return weight;
     }
 
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public Edge(Edge anotherEdge) {
         this.start = new Node(anotherEdge.start);
         this.end = new Node(anotherEdge.end);
@@ -60,13 +64,11 @@ public class Edge implements Comparable<Edge>, Cloneable {
         } else return 0;
     }
 
-    public boolean checkIfArc(Edge anotherEdge) {
-        if (this.start == anotherEdge.end && this.end == anotherEdge.start) {
-            isArc = false;
-            anotherEdge.isArc = false;
-            return false;
+    public void relax() {
+        if (end.getMinPath() > start.getMinPath() + weight) {
+            end.setMinPath(start.getMinPath() + weight);
+            end.setElderName(start.getName());
         }
-        return true;
     }
 
     @Override

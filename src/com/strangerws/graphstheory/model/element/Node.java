@@ -12,7 +12,7 @@ public class Node implements Comparable<Node>, Cloneable {
     private TreeSet<Edge> outs;
     private boolean isUsed = false;
     private String elderName;
-    private int minWeight;
+    private int minPath;
     private int id;
 
     public int getId() {
@@ -23,12 +23,12 @@ public class Node implements Comparable<Node>, Cloneable {
         this.id = id;
     }
 
-    public int getMinWeight() {
-        return minWeight;
+    public int getMinPath() {
+        return minPath;
     }
 
-    public void setMinWeight(int minWeight) {
-        this.minWeight = minWeight;
+    public void setMinPath(int minPath) {
+        this.minPath = minPath;
     }
 
     public String getElderName() {
@@ -92,7 +92,7 @@ public class Node implements Comparable<Node>, Cloneable {
         String[] array = new String[ins.size()];
         ArrayList<String> arrayList = new ArrayList<>();
         for (Edge edge : ins) {
-            arrayList.add(String.format("%s-%s", edge.getStart().getName(), edge.getWeight()));
+            arrayList.add(String.format("%s:%s", edge.getStart().getName(), edge.getWeight()));
         }
         return arrayList.toArray(array);
     }
@@ -101,7 +101,7 @@ public class Node implements Comparable<Node>, Cloneable {
         String[] array = new String[outs.size()];
         ArrayList<String> arrayList = new ArrayList<>();
         for (Edge edge : outs) {
-            arrayList.add(String.format("%s-%s", edge.getEnd().getName(), edge.getWeight()));
+            arrayList.add(String.format("%s:%s", edge.getEnd().getName(), edge.getWeight()));
         }
         return arrayList.toArray(array);
     }

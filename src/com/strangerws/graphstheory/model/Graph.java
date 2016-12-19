@@ -33,8 +33,8 @@ public class Graph {
                 if (tmp == null) {
                     tmp = new Node(mas[0]);
                     for (int i = 1; i < mas.length; i++) {
-                        if (mas[i].contains("-")) {
-                            element = mas[i].split("-");
+                        if (mas[i].contains(":")) {
+                            element = mas[i].split(":");
                         } else {
                             element[0] = mas[i];
                         }
@@ -56,8 +56,8 @@ public class Graph {
 
                 } else if (tmp != null) {
                     for (int i = 1; i < mas.length; i++) {
-                        if (mas[i].contains("-")) {
-                            element = mas[i].split("-");
+                        if (mas[i].contains(":")) {
+                            element = mas[i].split(":");
                         } else {
                             element[0] = mas[i];
                         }
@@ -167,8 +167,8 @@ public class Graph {
             String[] element = new String[]{"", "0"};
 
             for (String out : outs) {
-                if (out.contains("-")) {
-                    element = out.split("-");
+                if (out.contains(":")) {
+                    element = out.split(":");
                 } else {
                     element[0] = out;
                 }
@@ -200,7 +200,7 @@ public class Graph {
     }
 
     @Nullable
-    public Node findNode(String name) {
+    private Node findNode(String name) {
         for (Node node : graph) {
             if (node.getName().equals(name)) {
                 return node;
@@ -211,11 +211,13 @@ public class Graph {
 
     private void initializeSearch() {
         for (Node node : graph) {
+            node.setMinPath(Integer.MAX_VALUE / 2);
             node.setUsed(false);
+            node.setElderName(null);
         }
     }
 
-    public void depthFirstSearch(List<Node> nodes, Node node) {
+    private void depthFirstSearch(List<Node> nodes, Node node) {
         if (!node.isUsed()) {
             node.setUsed(true);
             nodes.add(node);
@@ -261,18 +263,41 @@ public class Graph {
         return breadthFirstSearch(findNode(nodeInfo));
     }
 
-    private void dijkstraAlgorithm(String nodeInfo) {
-        Node node = findNode(nodeInfo);
-        for (Node value : graph) {
-            value.setMinWeight(Integer.MIN_VALUE);
-        }
-        node.setMinWeight(0);
-        for (Node value : graph) {
+    private void dijkstraAlgorithm(Node node) {
+        Queue<Node> queue = new LinkedList<>(graph);
+        Node u;
+        while (!queue.isEmpty()) {
+            u = queue.remove();
+            for (Edge e : u.getOuts()) {
+                if (u.getMinPath() + e.getWeight() < e.getEnd().getMinPath()) {
+                    e.relax();
+                    queue.add(u);
+                }
+            }
         }
     }
 
-    private void fordBellmanAlgorithm() {
+    private Node fordBellmanAlgorithm(Node node) {
+        Set<Edge> edges = new TreeSet<>();
 
+        for (Node n : graph) {
+            for (Edge e : n.getOuts()) {
+                edges.add(e);
+            }
+        }
+
+        for (int i = 0; i < graph.size(); i++) {
+            for (Edge e : edges) {
+                e.relax();
+            }
+        }
+
+        for (Edge e : edges) {
+            if (e.getEnd().getMinPath() > e.getStart().getMinPath() + e.getWeight()) {
+                return e.getStart();
+            }
+        }
+        return null;
     }
 
     private int[][] floydAlgorithm() {
@@ -280,11 +305,35 @@ public class Graph {
         for (int k = 0; k < matrix.length; k++) {
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix.length; j++) {
-                    matrix[i][j] = Math.min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+                    if (i == j) {
+                        matrix[i][j] = 0;
+                    } else {
+                        matrix[i][j] = Math.min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+                    }
                 }
             }
         }
+
         return matrix;
+    }
+
+    public boolean beginFordBellman(String nodeInfo) {
+        initializeSearch();
+        Node node = findNode(nodeInfo);
+        node.setMinPath(0);
+
+        if (fordBellmanAlgorithm(node) != null) {
+            return false;
+        }
+        return true;
+    }
+
+    public void beginDijkstra(String nodeInfo) {
+        initializeSearch();
+        Node node = findNode(nodeInfo);
+        node.setMinPath(0);
+
+        dijkstraAlgorithm(node);
     }
 
     private int[][] getWeightMatrixForGraph() {
@@ -470,8 +519,21 @@ public class Graph {
         return tree;
     }
 
+    //IV-a-5
+    public List<Integer> getMinimalLengthFromNodeToAllNodesByDijkstra(String nodeInfo) {
+        List<Integer> lengths = new ArrayList<>();
+
+        beginDijkstra(nodeInfo);
+
+        for (Node node : graph) {
+            lengths.add(node.getMinPath());
+        }
+
+        return lengths;
+    }
+
     //IV-b-5
-    public List<Integer> getMinimalLengthFromNodeToAllNodes(String nodeInfo) {
+    public List<Integer> getMinimalLengthFromNodeToAllNodesByFloyd(String nodeInfo) {
         List<Integer> lengths = new ArrayList<>();
 
         Node node = findNode(nodeInfo);
@@ -498,7 +560,58 @@ public class Graph {
     //TODO - IV-c-18
     public List<Node> getNegativeWeightCycle() {
         List<Node> nodes = new ArrayList<>();
-        //TODO
+
+        initializeSearch();
+        graph.first().setMinPath(0);
+
+        Node node = fordBellmanAlgorithm(graph.first());
+        if (node != null) {
+            nodes.add(node);
+            Node tmp = findNode(node.getElderName());
+            do {
+                nodes.add(tmp);
+                tmp = findNode(tmp.getElderName());
+            } while (!tmp.getElderName().equals(node.getName()));
+        }
+
         return nodes;
+    }
+
+    //TODO - V - Max Flow
+    public int getMaxFlow(String nodeS, String nodeT) {
+        int flow = 0;
+        Node s = findNode(nodeS);
+        Node t = findNode(nodeT);
+
+        Node u;
+        Node v;
+
+        while (breadthFirstSearch(s) == null) {
+            int pathFlow = Integer.MAX_VALUE;
+
+            for (v = t; v != s; v = findNode(v.getElderName())) {
+                u = findNode(v.getElderName());
+                int edgeFlow = 0;
+                for (Edge e : u.getOuts()) {
+                    if (e.getEnd() == v) {
+                        edgeFlow = e.getWeight();
+                    }
+                }
+                pathFlow = Math.min(pathFlow, edgeFlow);
+            }
+
+            for (v = t; v != s; v = findNode(v.getElderName())) {
+                u = findNode(v.getElderName());
+                for (Edge e : u.getOuts()) {
+                    if (e.getEnd() == v) {
+                        e.setWeight(e.getWeight() - pathFlow);
+                    }
+                }
+            }
+
+            flow += pathFlow;
+        }
+
+        return flow;
     }
 }

@@ -11,6 +11,7 @@ public class Main {
         Graph graph1 = new Graph("resources\\test.txt");
         Graph graph2 = new Graph("resources\\test2.txt");
         Graph graph3 = new Graph("resources\\test3.txt");
+        Graph graph4 = new Graph("resources\\test4.txt");
         Graph graphCopy = new Graph(graph1);
         GraphView view = new GraphView();
 
@@ -35,11 +36,18 @@ public class Main {
 
         view.printNodes(graphCopy.beginBFS(String.valueOf(1)), "BFS:");
         view.printNodes(graphCopy.beginDFS(String.valueOf(1)), "DFS:");
+
         view.printNodes(graphCopy.getUnaccessibleNodesFromNode(String.valueOf(1)), "Unaccessible from 1:");
         view.printInteger(graphCopy.getArkCountFromMinimalPath(String.valueOf(1), String.valueOf(2)), "Ark Count for nodes 1 and 2:");
         view.printMap(graphCopy.getMinimalLengthFromAllNodesToNode(String.valueOf(1)), "Minimal Path from all nodes to 1:");
+
         view.printGraph(graphCopy.getKruskalTree());
-        view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodes(String.valueOf(2)), "Minimal Path from 2 to all nodes:");
+
+        view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByFloyd(String.valueOf(2)), "Minimal Path from 2 to all nodes (Floyd):");
+        //view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByDijkstra(String.valueOf(2)), "Minimal Path from 2 to all nodes (Dijkstra):");
         view.printInteger(graphCopy.getMinimalLength(String.valueOf(1), String.valueOf(6)), "Minimal Path from 1 to 6:");
+        view.printNodes(graphCopy.getNegativeWeightCycle(), "Negative weight cycle:");
+
+        view.printInteger(graph4.getMaxFlow("s", "t"), "Max Flow from s to t:");
     }
 }
