@@ -58,7 +58,6 @@ public class GraphView implements View {
             }
         }
         System.out.println();
-        System.out.println();
     }
 
     @Override

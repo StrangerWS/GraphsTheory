@@ -7,6 +7,7 @@ public class Edge implements Comparable<Edge>, Cloneable {
     private Node start;
     private Node end;
     private int weight;
+    private int flow;
     private boolean isArc;
 
     public Node getStart() {
@@ -24,6 +25,15 @@ public class Edge implements Comparable<Edge>, Cloneable {
     public void setWeight(int weight) {
         this.weight = weight;
     }
+
+    public int getFlow() {
+        return flow;
+    }
+
+    public void setFlow(int flow) {
+        this.flow = flow;
+    }
+
 
     public Edge(Edge anotherEdge) {
         this.start = new Node(anotherEdge.start);

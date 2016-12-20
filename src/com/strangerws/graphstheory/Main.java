@@ -44,7 +44,7 @@ public class Main {
         view.printGraph(graphCopy.getKruskalTree());
 
         view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByFloyd(String.valueOf(2)), "Minimal Path from 2 to all nodes (Floyd):");
-        //view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByDijkstra(String.valueOf(2)), "Minimal Path from 2 to all nodes (Dijkstra):");
+       // view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByDijkstra(String.valueOf(2)), "Minimal Path from 2 to all nodes (Dijkstra):");
         view.printInteger(graphCopy.getMinimalLength(String.valueOf(1), String.valueOf(6)), "Minimal Path from 1 to 6:");
         view.printNodes(graphCopy.getNegativeWeightCycle(), "Negative weight cycle:");
 

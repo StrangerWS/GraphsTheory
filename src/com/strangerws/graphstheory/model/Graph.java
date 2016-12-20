@@ -251,6 +251,27 @@ public class Graph {
         return nodes;
     }
 
+    private boolean breadthFlowSearch(Node node, Node t) {
+        initializeSearch();
+        node.setUsed(true);
+        node.setElderName(null);
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        while (!queue.isEmpty()) {
+            Node tmp = queue.poll();
+            for (Edge out : tmp.getOuts()) {
+                if (!out.getEnd().isUsed() && out.getWeight() > 0) {
+                    out.getEnd().setUsed(true);
+                    out.getEnd().setElderName(tmp.getName());
+                    queue.add(out.getEnd());
+                }
+            }
+        }
+
+        return t.isUsed();
+    }
+
     public List<Node> beginDFS(String nodeInfo) {
         initializeSearch();
         List<Node> nodes = new ArrayList<>();
@@ -557,7 +578,7 @@ public class Graph {
         return weightMatrix[nodeU.getId()][nodeV.getId()];
     }
 
-    //TODO - IV-c-18
+    //IV-c-18
     public List<Node> getNegativeWeightCycle() {
         List<Node> nodes = new ArrayList<>();
 
@@ -577,41 +598,42 @@ public class Graph {
         return nodes;
     }
 
-    //TODO - V - Max Flow
+    //V - Max Flow
     public int getMaxFlow(String nodeS, String nodeT) {
         int flow = 0;
         Node s = findNode(nodeS);
         Node t = findNode(nodeT);
 
-        Node u;
-        Node v;
-
-        while (breadthFirstSearch(s) == null) {
-            int pathFlow = Integer.MAX_VALUE;
+        Node v = s;
+        while (breadthFlowSearch(s, t)) {
+            int sessionFlow = Integer.MAX_VALUE;
 
             for (v = t; v != s; v = findNode(v.getElderName())) {
-                u = findNode(v.getElderName());
-                int edgeFlow = 0;
-                for (Edge e : u.getOuts()) {
+                Edge edge = null;
+                Node parent = findNode(v.getElderName());
+                for (Edge e : parent.getOuts()) {
                     if (e.getEnd() == v) {
-                        edgeFlow = e.getWeight();
+                        edge = e;
                     }
                 }
-                pathFlow = Math.min(pathFlow, edgeFlow);
+
+                sessionFlow = Math.min(sessionFlow, edge.getWeight());
             }
 
             for (v = t; v != s; v = findNode(v.getElderName())) {
-                u = findNode(v.getElderName());
-                for (Edge e : u.getOuts()) {
+                Edge edge = null;
+                Node parent = findNode(v.getElderName());
+                for (Edge e : parent.getOuts()) {
                     if (e.getEnd() == v) {
-                        e.setWeight(e.getWeight() - pathFlow);
+                        edge = e;
                     }
                 }
+                edge.setWeight(edge.getWeight() - sessionFlow);
             }
-
-            flow += pathFlow;
+            flow += sessionFlow;
         }
 
         return flow;
     }
+
 }
