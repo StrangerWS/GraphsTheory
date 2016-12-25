@@ -1,9 +1,8 @@
-package com.strangerws.graphstheory.view.impl;
+package com.strangerws.graphstheory.view;
 
 import com.strangerws.graphstheory.model.Graph;
 import com.strangerws.graphstheory.model.element.Edge;
 import com.strangerws.graphstheory.model.element.Node;
-import com.strangerws.graphstheory.view.api.View;
 
 import java.util.List;
 import java.util.Map;
@@ -11,9 +10,8 @@ import java.util.Map;
 /**
  * Created by DobryninAM on 08.11.2016.
  */
-public class GraphView implements View {
+public class GraphView {
 
-    @Override
     public void printGraph(Graph graph) {
         for (Node node : graph.getGraph()) {
             System.out.print(node.getName());
@@ -41,13 +39,11 @@ public class GraphView implements View {
         System.out.println();
     }
 
-    @Override
     public void printGraph(Graph graph, String name) {
         System.out.println(name);
         printGraph(graph);
     }
 
-    @Override
     public void printNodes(List<Node> nodes, String info) {
         System.out.print(info);
         if (nodes.size() == 0) {
@@ -60,7 +56,6 @@ public class GraphView implements View {
         System.out.println();
     }
 
-    @Override
     public void printAdjacentList(Graph graph) {
         for (Node node : graph.getGraph()) {
             System.out.print(node.getName());
@@ -72,20 +67,17 @@ public class GraphView implements View {
         System.out.println();
     }
 
-    @Override
     public void printAdjacentList(Graph graph, String info) {
         System.out.println(info);
         printAdjacentList(graph);
     }
 
-    @Override
     public void printInteger(int integer, String info) {
         System.out.print(info);
         System.out.println(String.format(" %s", integer));
         System.out.println();
     }
 
-    @Override
     public void printMap(Map<Node, Integer> paths, String info) {
         System.out.println(info);
         for (Map.Entry<Node, Integer> entry : paths.entrySet()) {

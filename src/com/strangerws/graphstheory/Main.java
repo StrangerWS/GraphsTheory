@@ -1,7 +1,7 @@
 package com.strangerws.graphstheory;
 
 import com.strangerws.graphstheory.model.Graph;
-import com.strangerws.graphstheory.view.impl.GraphView;
+import com.strangerws.graphstheory.view.GraphView;
 
 /**
  * Created by DobryninAM on 27.09.2016.
@@ -44,7 +44,7 @@ public class Main {
         view.printGraph(graphCopy.getKruskalTree());
 
         view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByFloyd(String.valueOf(2)), "Minimal Path from 2 to all nodes (Floyd):");
-       // view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByDijkstra(String.valueOf(2)), "Minimal Path from 2 to all nodes (Dijkstra):");
+        view.printIntegers(graphCopy.getMinimalLengthFromNodeToAllNodesByDijkstra(String.valueOf(2)), "Minimal Path from 2 to all nodes (Dijkstra):");
         view.printInteger(graphCopy.getMinimalLength(String.valueOf(1), String.valueOf(6)), "Minimal Path from 1 to 6:");
         view.printNodes(graphCopy.getNegativeWeightCycle(), "Negative weight cycle:");
 

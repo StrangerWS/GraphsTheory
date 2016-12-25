@@ -22,60 +22,11 @@ public class Graph {
         graph = new TreeSet<>();
         try (BufferedReader fs = new BufferedReader(new FileReader(fileName))) {
             String line;
-            Node tmp;
-            Node search;
 
             while ((line = fs.readLine()) != null) {
                 String[] mas = line.split(" ");
-                Edge edgeTemp;
-                tmp = findNode(mas[0]);
-                String[] element = new String[]{"", "0"};
-                if (tmp == null) {
-                    tmp = new Node(mas[0]);
-                    for (int i = 1; i < mas.length; i++) {
-                        if (mas[i].contains(":")) {
-                            element = mas[i].split(":");
-                        } else {
-                            element[0] = mas[i];
-                        }
-                        if (findNode(element[0]) == null) {
-                            search = new Node(element[0]);
-                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
-                            tmp.putNewOut(edgeTemp);
-                            search.putNewIn(edgeTemp);
-                        } else {
-                            search = findNode(element[0]);
-                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
-                            tmp.putNewOut(edgeTemp);
-                            search.putNewIn(edgeTemp);
-                        }
-                        graph.add(search);
-                    }
-                    graph.add(tmp);
-
-
-                } else if (tmp != null) {
-                    for (int i = 1; i < mas.length; i++) {
-                        if (mas[i].contains(":")) {
-                            element = mas[i].split(":");
-                        } else {
-                            element[0] = mas[i];
-                        }
-                        if ((findNode(element[0])) == null) {
-                            search = new Node(element[0]);
-                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
-                            search.putNewIn(edgeTemp);
-                            tmp.putNewOut(edgeTemp);
-                        } else {
-                            search = findNode(element[0]);
-                            edgeTemp = new Edge(tmp, search, Integer.parseInt(element[1]));
-                            search.putNewIn(edgeTemp);
-                            tmp.putNewOut(edgeTemp);
-                        }
-                        graph.add(search);
-                    }
-                    graph.add(tmp);
-                }
+                String[] outs = Arrays.copyOfRange(mas, 1, mas.length);
+                addNode(mas[0], outs);
 
             }
 
@@ -98,63 +49,6 @@ public class Graph {
 
     public TreeSet<Node> getGraph() {
         return graph;
-    }
-
-    public Graph buildFromMatrix(int[][] matrix) {
-        //TODO
-        Graph graph = new Graph();
-        Node node1;
-        Node node2;
-        Edge edge;
-
-        for (int i = 0; i < matrix.length; i++) {
-            graph.graph.add(new Node(String.valueOf(i + 1)));
-        }
-
-        for (int i = 0; i < matrix.length; i++) {
-            node1 = findNode(String.valueOf(i + 1));
-            for (int j = 0; j < matrix.length; j++) {
-                if (matrix[i][j] != 0) {
-                    node2 = findNode(String.valueOf(j + 1));
-                    edge = new Edge(node1, node2, matrix[i][j]);
-                    node1.putNewOut(edge);
-                    node2.putNewIn(edge);
-                }
-            }
-        }
-        return graph;
-    }
-
-    public void addNode(Node node) {
-        //TODO - Fix
-        if (findNode(node.getName()) == null) {
-            graph.add(node);
-        }
-        Edge edgeTemp;
-        for (Edge in : node.getIns()) {
-            Node tmp = findNode(in.getStart().getName());
-            if (tmp != null) {
-                edgeTemp = new Edge(tmp, node, in.getWeight());
-                tmp.putNewOut(edgeTemp);
-            } else {
-                tmp = new Node(in.getStart().getName());
-                edgeTemp = new Edge(tmp, node, in.getWeight());
-                tmp.putNewOut(edgeTemp);
-                graph.add(tmp);
-            }
-        }
-        for (Edge out : node.getOuts()) {
-            Node tmp = findNode(out.getEnd().getName());
-            if (tmp != null) {
-                edgeTemp = new Edge(node, tmp, out.getWeight());
-                tmp.putNewIn(edgeTemp);
-            } else {
-                tmp = new Node(out.getEnd().getName());
-                edgeTemp = new Edge(node, tmp, out.getWeight());
-                tmp.putNewIn(edgeTemp);
-                graph.add(tmp);
-            }
-        }
     }
 
     public void addNode(String nodeInfo, String[] outs) {
@@ -442,7 +336,7 @@ public class Graph {
     //I-b-5
     public void merge(Graph anotherGraph) {
         for (Node node : anotherGraph.getGraph()) {
-            this.addNode(node);
+            this.addNode(node.getName(), node.getOutsArray());
         }
     }
 
